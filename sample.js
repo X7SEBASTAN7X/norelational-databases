@@ -21,7 +21,7 @@ const { MongoClient } = require("mongodb");
 
 // The connection string tells the driver where MongoDB is running.
 // "mongodb://localhost:27017" is the default for a local installation.
-const URI = process.env.MONGODB_URI;
+const URI = process.env.MONGODB_URI || "mongodb://localhost:27017";
 
 // MongoClient is the entry point to the driver.
 // You create one client per application.
