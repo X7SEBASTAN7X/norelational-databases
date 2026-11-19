@@ -1,6 +1,8 @@
 const { MongoClient } = require("mongodb");
 const fs = require("fs");
 const path = require("path");
+process.loadEnvFile('.env');
+
 
 const URI = process.env.MONGODB_URI || "mongodb://localhost:27017";
 const client = new MongoClient(URI);

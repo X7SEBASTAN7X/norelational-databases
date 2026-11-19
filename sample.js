@@ -11,11 +11,17 @@
 // the same commands mongosh sends to the database.
 // ------------------------------------------------------------
 
+try {
+  process.loadEnvFile('.env');
+} catch (err) {
+  console.error('Could not load .env file:', err.message);
+}
+
 const { MongoClient } = require("mongodb");
 
 // The connection string tells the driver where MongoDB is running.
 // "mongodb://localhost:27017" is the default for a local installation.
-const URI = "mongodb://localhost:27017";
+const URI = process.env.MONGODB_URI;
 
 // MongoClient is the entry point to the driver.
 // You create one client per application.
@@ -45,18 +51,64 @@ async function main() {
   //
   // Do the same here. Insert one book that has a publisher field
   // containing an embedded object with at least a name and a country.
-
+    await books.insertOne({
+        title: "El diario de Greg", 
+        publisher: { 
+          name: "Greg", 
+          country: "United States"
+        }
+        });
   // ----------------------------------------------------------
   // TODO 2 - insertOne with an array
   // ----------------------------------------------------------
   // Insert one book that has a tags field containing
   // an array of at least 3 strings.
+    await books.insertOne(
+      {title: "The Hunger Games", 
+        publisher: "", 
+        tags: 
+        ["Romance", "Adventure", "Comedy"]
+      });
 
   // ----------------------------------------------------------
   // TODO 3 - insertMany
   // ----------------------------------------------------------
   // Insert at least 5 books in a single call using insertMany.
   // Include a mix: some with a publisher object, some with tags, some with both.
+
+    await books.insertMany([{
+      title: "El niño Millonario",
+      publisher: "Mi papá y mi mamá"
+    },{
+    title: "Harry Potter y la piedra filosofal",
+    author: "J.K. Rowling",
+    publisher: {
+      name: "Salamandra",
+      country: "España"
+    },
+    tags: ["fantasía", "magia", "juvenil"]
+  },
+  {
+    title: "El diario de Greg",
+    author: "Jeff Kinney",
+    publisher: {
+      name: "Molino",
+      country: "España"
+    }
+  },
+  {
+    title: "Gravity Falls: Diario secreto",
+    tags: ["misterio", "humor", "aventura", "juvenil"]
+  },
+  {
+    title: "El principito",
+    publisher: {
+      name: "Reynal & Hitchcock",
+      country: "Estados Unidos"
+    },
+    tags: ["clásico", "filosofía", "infantil"]
+  }]);
+
 
   // ----------------------------------------------------------
   // TODO 4 - find all documents
