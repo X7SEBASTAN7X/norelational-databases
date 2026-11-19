@@ -1,8 +1,11 @@
 const { MongoClient } = require("mongodb");
 const fs = require("fs");
 const path = require("path");
-process.loadEnvFile('.env');
-
+try {
+  process.loadEnvFile('.env');
+} catch (err) {
+  console.error('Could not load .env file:', err.message);
+}
 
 const URI = process.env.MONGODB_URI || "mongodb://localhost:27017";
 const client = new MongoClient(URI);
